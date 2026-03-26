@@ -1,30 +1,33 @@
 import Jetson.GPIO as GPIO
 import time
 
-# Use the physical pin numbers (1-40)
+# 1. Setup
 GPIO.setwarnings(False) 
 GPIO.setmode(GPIO.BOARD)
 
-# These are the PHYSICAL holes on the board
+# Define our pins
 RED = 15 
-YELLOW = 11
-GREEN = 13
+YELLOW = 13
+GREEN = 11
+ALL_PINS = [RED, YELLOW, GREEN]
 
-print("Forcing Pin 13 (Green) to Output...")
+print(f"Forcing Pins {ALL_PINS} to ON...")
 
 try:
-    # This is where the 'invalid' error usually happens
-    GPIO.setup(GREEN, GPIO.OUT)
+    # 2. Initialize all pins as outputs
+    GPIO.setup(ALL_PINS, GPIO.OUT)
     
+    # 3. Turn them all HIGH
+    GPIO.output(ALL_PINS, GPIO.HIGH)
+    
+    print("All lights should be glowing! Press Ctrl+C to stop.")
+    
+    # Keep the script running so the pins stay powered
     while True:
-        print("GREEN ON")
-        GPIO.output(GREEN, GPIO.HIGH)
-        time.sleep(1)
-        print("GREEN OFF")
-        GPIO.output(GREEN, GPIO.LOW)
         time.sleep(1)
         
 except Exception as e:
     print(f"Error: {e}")
 finally:
+    # Cleanup turns the pins back off when you exit
     GPIO.cleanup()
