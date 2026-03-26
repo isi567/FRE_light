@@ -7,21 +7,21 @@ GPIO.setmode(GPIO.BOARD)
 
 # These are the PHYSICAL holes on the board
 RED = 15 
-YELLOW = 13
-GREEN = 11
+YELLOW = 11
+GREEN = 13
 
-print("Forcing Pin 15 (Red) to Output...")
+print("Forcing Pin 13 (Green) to Output...")
 
 try:
     # This is where the 'invalid' error usually happens
-    GPIO.setup(RED, GPIO.OUT)
+    GPIO.setup(GREEN, GPIO.OUT)
     
     while True:
-        print("RED ON")
-        GPIO.output(RED, GPIO.HIGH)
+        print("GREEN ON")
+        GPIO.output(GREEN, GPIO.HIGH)
         time.sleep(1)
-        print("RED OFF")
-        GPIO.output(RED, GPIO.LOW)
+        print("GREEN OFF")
+        GPIO.output(GREEN, GPIO.LOW)
         time.sleep(1)
         
 except Exception as e:
