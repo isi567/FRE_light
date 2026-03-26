@@ -29,19 +29,15 @@ class SafetyLightBridge(Node):
         GPIO.output(self.pins, GPIO.LOW)
 
     def listener_callback(self, msg):
-        self.turn_off_all() # Reset all lights before setting the new one
+    # Pin 11 is our 'Reliable' Pin
+    # We will use it for both, just different blink patterns!
+        if msg.data == 1: # STATUS: OK
+            self.get_logger().info("Status: GREEN (Solid)")
+        # Code to keep Pin 11 HIGH
         
-        if msg.data == 1: # OK
-            GPIO.output(LED_GREEN, GPIO.HIGH)
-            self.get_logger().info("Status: OK (Green)")
-        elif msg.data == 2: # WARNING
-            GPIO.output(LED_YELLOW, GPIO.HIGH)
-            self.get_logger().info("Status: WARNING (Yellow)")
-        elif msg.data == 3: # EMERGENCY
-            GPIO.output(LED_RED, GPIO.HIGH)
-            self.get_logger().info("Status: EMERGENCY (Red)")
-        else:
-            self.get_logger().warn(f"Unknown Status Received: {msg.data}")
+        elif msg.data == 3: # STATUS: ERROR (Red was dead)
+            self.get_logger().info("Status: RED SUBSTITUTE (Blinking Green/Yellow)")
+        # Code to make Pin 11 BLINK so you know it's an error
 
     def __del__(self):
         GPIO.cleanup()
