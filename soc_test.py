@@ -1,24 +1,25 @@
 import Jetson.GPIO as GPIO
 import time
 
-# Use TEGRA_SOC mode
-GPIO.setmode(GPIO.TEGRA_SOC)
+# Use the physical pin numbers (1-40)
+GPIO.setwarnings(False) 
+GPIO.setmode(GPIO.BOARD)
 
-# Use the Raw Kernel IDs for Orin Nano
-GREEN = 444
-YELLOW = 422
-RED = 428
+# These are the PHYSICAL holes on the board
+RED = 15 
+YELLOW = 13
+GREEN = 11
 
-print(f"Testing Raw IDs: Green({GREEN}), Yellow({YELLOW}), Red({RED})")
+print("Forcing Pin 15 (Red) to Output...")
 
 try:
-    GPIO.setup([GREEN, YELLOW, RED], GPIO.OUT, initial=GPIO.LOW)
+    # This is where the 'invalid' error usually happens
+    GPIO.setup(RED, GPIO.OUT)
     
     while True:
-        print("RED ON (ID 428)")
+        print("RED ON")
         GPIO.output(RED, GPIO.HIGH)
         time.sleep(1)
-        
         print("RED OFF")
         GPIO.output(RED, GPIO.LOW)
         time.sleep(1)
